@@ -1,2 +1,3 @@
-# cute-pink-white-proposal-website-with-playful-acceptance-interaction
-Exported from Caffeine project: Cute pink/white proposal website with playful acceptance interaction
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

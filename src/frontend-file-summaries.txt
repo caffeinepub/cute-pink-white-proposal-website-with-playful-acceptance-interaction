@@ -1,0 +1,16 @@
+{
+  "frontend/src/index.css": "Global styles with romantic pink/white/red OKLCH color system, custom fonts, background pattern styling, keyframe animations including envelope-open animation, and prefers-reduced-motion support for accessibility.",
+  "frontend/tailwind.config.js": "Extended Tailwind configuration with romantic color palette, increased border radius values, soft shadow utilities, and custom animation support for the proposal theme.",
+  "frontend/src/config/proposalCopy.ts": "Personalization constants and helper functions with updated copy for \"Shakti, will you be my boyfriend forever?\" and \"Are you ready to be my YELLOW FOREVER?\" with graceful fallbacks for empty values.",
+  "frontend/src/components/ProposalLayout.tsx": "Layout wrapper component providing the hearts background pattern, backdrop blur overlay for readability, responsive container, footer with attribution, and background music controls.",
+  "frontend/src/components/HeartConfetti.tsx": "Celebration overlay component that generates and animates 50 falling heart confetti pieces with randomized positions, delays, durations, sizes, and colors when \"Yes\" is clicked.",
+  "frontend/src/components/PlayfulNoButton.tsx": "Interactive \"No\" button component that playfully moves to random positions on hover/click/touch, cycles through encouraging messages, and tracks attempt count.",
+  "frontend/src/pages/ProposalPage.tsx": "Main proposal page with three states (asking/envelope/accepted), now using the assetUrl helper for all static asset references to ensure correct loading in production.",
+  "frontend/src/App.tsx": "Root application component with an error boundary wrapper that catches and displays runtime errors gracefully, preventing the proposal flow from breaking in production.",
+  "frontend/src/hooks/useQueries.ts": "Empty placeholder file for React Query hooks (no backend queries needed for this static proposal site).",
+  "frontend/src/components/CuteRingAnimation.tsx": "Presentational component that renders an animated ring image with sparkle effects, now using the assetUrl helper for production compatibility.",
+  "frontend/src/components/LoveLetterEnvelopeView.tsx": "Interactive envelope view component that displays \"Tap to Open💌\" text with the envelope illustration, sparkle effects, and handles click/tap to reveal the acceptance message with smooth animations.",
+  "frontend/src/components/BackgroundMusicControls.tsx": "Fixed-position music control component with play/pause button and volume controls, now using the assetUrl helper for the MP3 file to prevent production 404s.",
+  "frontend/deployment/production-domain.txt": "Contains the valid production domain \"for-my-yellow\" (replacing the invalid \"for_my_YELLOW\" with proper hyphenation and no underscores).",
+  "frontend/src/utils/assetUrl.ts": "Utility function that generates correct asset URLs using the app's base path to prevent production 404s when deployed to non-root paths."
+}

@@ -1,0 +1,83 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Unblock production deployment by fixing domain config, build robustness, and static asset paths",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "summary": "Replace the invalid production domain string with a platform-valid domain value and ensure the frontend build references the updated value where applicable.",
+      "acceptanceCriteria": [
+        "The configured production domain is not \"for_my_YELLOW\" and contains only letters, numbers, and hyphens (no underscores).",
+        "A production deployment can be initiated without any domain validation errors."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/deployment/production-domain.txt",
+          "operation": "create",
+          "description": "Create a single source-of-truth domain value for production deployment (e.g., replace \"for_my_YELLOW\" with a valid hyphenated value like \"for-my-yellow\"). This file should be used by the deployment configuration/scripts that read from the frontend workspace. Use the github-export-icp-cli template conventions where applicable. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "summary": "Fix the generic production deployment failure by hardening the frontend build and ensuring the deployed site runs the proposal flow end-to-end without runtime errors.",
+      "acceptanceCriteria": [
+        "A new production deployment completes successfully without returning \"Production deployment error: Deployment error\".",
+        "The deployed production site loads the proposal flow end-to-end (asking → yes → envelope → accepted) without runtime errors in the browser console."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/assetUrl.ts",
+          "operation": "create",
+          "description": "Add a small utility to generate correct asset URLs using the app’s base path (to prevent production pathing issues when not hosted at \"/\"). This helps avoid runtime 404s that can surface as generic deployment/runtime failures. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ProposalPage.tsx",
+          "operation": "modify",
+          "description": "Switch hardcoded absolute asset strings to use the new asset URL helper for the hero image and mascot so production deployments with a non-root base path still load assets correctly. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/CuteRingAnimation.tsx",
+          "operation": "modify",
+          "description": "Switch the ring image path to use the new asset URL helper so it reliably loads in production regardless of base path. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/BackgroundMusicControls.tsx",
+          "operation": "modify",
+          "description": "Switch the MP3 path to use the new asset URL helper to prevent production 404s due to base path differences; keep the existing user-interaction gating for autoplay safety. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add a lightweight top-level error boundary (or equivalent minimal runtime guard) around the proposal flow so unexpected render-time exceptions are surfaced clearly and do not break the end-to-end flow in production. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Ensure all UI-referenced static assets exist at expected paths and load in production (hero photo, generated mascot, and background music).",
+      "acceptanceCriteria": [
+        "In production, the hero photo renders (no broken image icon).",
+        "In production, the mascot image renders in both the asking and accepted states.",
+        "In production, after a user interaction, the background music can play successfully (no 404s for the MP3 in the network panel)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/file_0000000085ec71fa9b0ffc17f2cf245d-1.png",
+          "operation": "modify",
+          "description": "Verify the hero photo asset exists at this exact path and is the intended image; replace the file contents if the current file is missing/corrupted or mismatched (keep the same filename/path to match UI references)."
+        },
+        {
+          "path": "frontend/public/assets/generated/cute-mascot.dim_900x900.png",
+          "operation": "modify",
+          "description": "Verify the generated mascot image exists at this exact path and loads in production; replace the file contents if missing/corrupted (keep the same filename/path)."
+        },
+        {
+          "path": "frontend/public/assets/audio/romantic-background.mp3",
+          "operation": "create",
+          "description": "Add the background music MP3 at this exact path so the BackgroundMusicControls can load it in production after user interaction (avoid 404s)."
+        }
+      ]
+    }
+  ]
+}

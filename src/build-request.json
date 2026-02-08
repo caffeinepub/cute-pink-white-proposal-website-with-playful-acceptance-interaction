@@ -1,0 +1,71 @@
+{
+  "kind": "build_request",
+  "title": "Fix deployment blockers and launch the proposal site to production",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "text": "Resolve the deployment domain validation failure by replacing the invalid domain string \"for_my_YELLOW\" with a domain that meets the platform rules (5–50 characters; only letters, numbers, and hyphens), then re-attempt production deployment.",
+      "target": "unknown",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Finalize the website and go live now"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The configured production domain is not \"for_my_YELLOW\" and contains only letters, numbers, and hyphens (no underscores).",
+        "A production deployment can be initiated without any domain validation errors."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Investigate and fix the generic \"Production deployment error: Deployment error\" by identifying the failing step and correcting the underlying issue so the current Version 3 build can successfully deploy to production.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Finalize the website and go live now"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new production deployment completes successfully without returning \"Production deployment error: Deployment error\".",
+        "The deployed production site loads the proposal flow end-to-end (asking → yes → envelope → accepted) without runtime errors in the browser console."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Verify that all static assets referenced by the UI are present at their expected paths and load successfully in production (including the hero photo at \"/assets/file_0000000085ec71fa9b0ffc17f2cf245d-1.png\", the generated mascot at \"/assets/generated/cute-mascot.dim_900x900.png\", and the background music at \"/assets/audio/romantic-background.mp3\"). Fix any missing/incorrect paths or missing files.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Finalize the website and go live now"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In production, the hero photo renders (no broken image icon).",
+        "In production, the mascot image renders in both the asking and accepted states.",
+        "In production, after a user interaction, the background music can play successfully (no 404s for the MP3 in the network panel)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Respect the single-actor backend architecture; keep all Motoko logic in backend/main.mo.",
+    "Do not edit files under frontend/src/components/ui or any other paths listed as immutable in SYSTEM_CONTEXT."
+  ],
+  "nonGoals": [
+    "Adding new proposal interactions or additional pages beyond what already exists.",
+    "Introducing external databases, third-party auth providers, or non-Internet-Identity authentication."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
